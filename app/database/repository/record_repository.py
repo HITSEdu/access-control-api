@@ -2,7 +2,6 @@ from typing import List, Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import desc, select, update, delete
 
-from app.database.RecordUtils import RecordCreate, RecordUpdate
 from app.database.models.record import Record
 
 
@@ -10,7 +9,7 @@ class RecordRepository:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create(self, record_data: RecordCreate) -> Record:
+    async def create(self, record_data: dict) -> Record:
         record = Record(**record_data.dict())
         self.session.add(record)
         await self.session.commit()
@@ -24,7 +23,7 @@ class RecordRepository:
         await self.session.commit()
         return result.rowcount > 0
 
-    async def update(self, record_id: int, record_data: RecordUpdate) -> Optional[Record]:
+    async def update(self, record_id: int, record_data: dict) -> Optional[Record]:
         record = await self.get_by_id(record_id)
         if not record:
             return None

@@ -15,7 +15,6 @@ async def get_keys(
     db: AsyncSession = Depends(get_async_db)
 ):
     repository = RecordRepository(db)
-    # print(config.database_url())
     return await repository.get_all()
 
 
